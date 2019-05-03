@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 piedra1.setImageResource(ArrayImagenes[Math.floor(Math.random() * 2).toInt()])
 
             }
-
+ //para fragmento 2
             R.id.piedra2 -> {
 
                 piedra2.setImageResource(ArrayImagenes[Math.floor(Math.random() * 2).toInt()])
@@ -49,3 +49,5 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
     }
+    }
+}
