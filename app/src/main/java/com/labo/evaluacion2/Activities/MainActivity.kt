@@ -1,53 +1,52 @@
 package com.labo.evaluacion2.Activities
+
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import com.labo.evaluacion2.R
+import com.labo.evaluacion2.Fragmentos.dynamicFragment
+import com.labo.evaluacion2.Fragmentos.staticFragment
 
+class MainActivity : AppCompatActivity(), staticFragment.ButtonListener {
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
-
-    internal var piedra1: ImageView
+    private lateinit var dynamic_fragment: dynamicFragment
+    private val imagesId: IntArray = intArrayOf(R.drawable.piedra, R.drawable.piedra2)
+    private var counter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-       piedra1 = findViewById(R.id.piedra1)
-
-        piedra1.setOnClickListener(this)
-
+        changeFragment(dynamicFragment.newInstance(imagesId[0]))
     }
 
 
-    override fun onClick(v: View) {
+    override fun previousListener(v: View) {
+        dynamic_fragment = dynamicFragment.newInstance(verifyCounter(1))
+        changeFragment(dynamic_fragment)
+    }
 
-        val ArrayImagenes = intArrayOf(
-            R.drawable.piedra,
-            R.drawable.piedra2
-        )
+    override fun nextListener(v: View) {
+        dynamic_fragment = dynamicFragment.newInstance(verifyCounter(2))
+        changeFragment(dynamic_fragment)
+    }
 
-        val viewId = v.getId()
-
-
-        when (viewId) {
-
-            R.id.piedra1 -> {
-
-                piedra1.setImageResource(ArrayImagenes[Math.floor(Math.random() * 2).toInt()])
-
+    private fun verifyCounter(i: Int): Int{
+        return when (i) {
+            1 -> {
+                counter--
+                if(counter<0) counter = 2
+                imagesId[counter]
             }
- //para fragmento 2
-            R.id.piedra2 -> {
-
-                piedra2.setImageResource(ArrayImagenes[Math.floor(Math.random() * 2).toInt()])
-
+            else -> {
+                counter++
+                if(counter>2) counter = 0
+                imagesId[counter]
             }
-
-
-
+        }
     }
+
+    private fun changeFragment(frag: dynamicFragment){
+        supportFragmentManager.beginTransaction().replace(R.id.dynamic_fragment_container, frag).commit()
     }
+
 }
